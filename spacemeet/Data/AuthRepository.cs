@@ -11,9 +11,9 @@ namespace spacemeet.Data
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly DataContext _context;
+        private readonly spacemeetContext _context;
         private readonly IConfiguration _configuration;
-        public AuthRepository(DataContext context, IConfiguration configuration)
+        public AuthRepository(spacemeetContext context, IConfiguration configuration)
         {
             _configuration = configuration;
             _context = context;

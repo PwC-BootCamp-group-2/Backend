@@ -14,6 +14,7 @@ namespace spacemeet.Data
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Booking> Booking { get; set; } = default!;
 
         public DbSet<Space>? Space { get; set; }
