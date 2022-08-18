@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using spacemeet.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<spacemeetContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("spacemeetContext") ?? throw new InvalidOperationException("Connection string 'spacemeetContext' not found.")));
 
 // Add services to the container.
 

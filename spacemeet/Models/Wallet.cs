@@ -1,8 +1,11 @@
-﻿namespace spacemeet.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace spacemeet.Models
 {
     public class Wallet
     {
         public int Id { get; set; }
+        [ForeignKey("User")]
         public int UserId { get; set; }
         private string? Balance { get; set; }
         private string? PendingBalance { get; set; }
