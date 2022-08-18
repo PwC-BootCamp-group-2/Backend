@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace spacemeet.Dtos.User
 {
-    public class UserRegisterDto
+    public class UserLoginDto
     {
         public string email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public string phoneNumber { get; set; } = string.Empty;
-        public string companyName { get; set; } = string.Empty;
     }
 }

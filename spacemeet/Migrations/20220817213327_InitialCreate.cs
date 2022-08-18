@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace spacemeet.Migrations
 {
-    public partial class Adduser : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,9 @@ namespace spacemeet.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    companyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     passwordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     passwordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using spacemeet.Dtos.Character;
 
 namespace spacemeet
 {
@@ -11,9 +10,6 @@ namespace spacemeet
     {
         public AutoMapperProfile()
         {
-            CreateMap<Character, GetCharacterDto>();
-            CreateMap<AddCharacterDto, Character>();
-            CreateMap<UpdateCharacterDto, Character>();
         }
     }
 }
