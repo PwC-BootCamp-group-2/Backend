@@ -4,38 +4,40 @@ namespace spacemeet.Models
 {
     public class Wallet
     {
+        
+
         public int Id { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
-        private string? Balance { get; set; }
-        private string? PendingBalance { get; set; }
+        public int Balance { get ; set ; }
+        public int PendingBalance { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
         //To Be a to fund your wallet
-        public void FundWallet(int amount) 
+        public void FundWallet(int amount)
         {
-            int balance = Convert.ToInt32(Balance) + amount;
-            Balance = balance.ToString();
+            int balance = Balance + amount;
+            Balance = balance;
         }
 
         //For Merchants to be able to withdraw
         public void WithDrawFunds(int amount)
         {
-            int balance = Convert.ToInt32(Balance);
+            int balance = Balance;
             if (amount > 0 && balance > amount)
-                Balance = (balance - amount).ToString();
+                Balance = balance - amount;
         }
 
         //To get the Balance of a User
-        public string GetBalance()
+        public int GetBalance()
         {
-            string? balance = Balance;
+            int balance = Balance;
             return balance;
         }
 
         //To Get The Pending Balance For Merchant 
-        public string GetPendingBalance()
+        public int GetPendingBalance()
         {
             return PendingBalance;
         }
@@ -43,10 +45,10 @@ namespace spacemeet.Models
         //To move funds from pending Balance to balance
         public void FulfilBalance(int amount)
         {
-            int newBalance = Convert.ToInt32(Balance) + amount;
-            int newPendingBalance = Convert.ToInt32(PendingBalance) - amount;
-            Balance = newBalance.ToString();
-            PendingBalance = newPendingBalance.ToString();
+            int newBalance = Balance + amount;
+            int newPendingBalance = PendingBalance - amount;
+            Balance = newBalance;
+            PendingBalance = newPendingBalance;
         }
 
     }

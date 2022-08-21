@@ -58,8 +58,16 @@ namespace spacemeet.Data
             user.passwordHash = passwordHash;
             user.passwordSalt = passwordSalt;
 
+            
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            
+            //Initializing Users Wallet
+            Wallet userWallet = new Wallet() { UserId = user.Id, CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now };
+            _context.Wallets.Add(userWallet);
+            await _context.SaveChangesAsync();
+
+            //Getting Response
             response.Data = user.Id;
             return response;
         }
