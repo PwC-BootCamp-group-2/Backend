@@ -14,7 +14,7 @@ namespace spacemeet.Models
         public int ResourceId { get; set; }
         public int NoR { get; set; }
         public List<BookedDateModel>? BookedDates { get; set; }
-        public string? Amount { get; set; }
+        public int Amount { get; set; }
         public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

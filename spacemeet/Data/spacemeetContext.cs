@@ -20,5 +20,6 @@ namespace spacemeet.Data
         public DbSet<Space>? Space { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Transaction> Transactions { get; set; } = default!;
+        public DbSet<spacemeet.Models.Review>? Review { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using spacemeet.Models;
 
 namespace spacemeet.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BookingsController : ControllerBase
     {
@@ -50,20 +50,30 @@ namespace spacemeet.Controllers
             return booking;
         }
 
-        // PUT: api/Bookings/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBooking(int id, Booking booking)
-        {
-            if (id != booking.Id)
-            {
-                return BadRequest();
-            }
+        // Patch: api/Bookings/AcceptBooking/4
+        // Change Status to accepted
+        
 
-            _context.Entry(booking).State = EntityState.Modified;
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> AcceptBooking(int id)
+        {
+            
 
             try
             {
+                //Accepting the booking
+                Booking? booking = await _context.Booking.FindAsync(id);
+                
+                int MerchId = booking.MerchantId;
+                Wallet? MerchWallet = await _context.Wallets.FirstAsync(e => e.UserId == MerchId);
+                if (MerchWallet != null)
+                {
+                    double commission = booking.Amount - (booking.Amount * 20 / 100);
+                    MerchWallet.FulfilBalance(Convert.ToInt32(commission));
+                }
+                booking.Status = "Active";
+                booking.UpdatedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -81,40 +91,114 @@ namespace spacemeet.Controllers
             return NoContent();
         }
 
+        //Reject Bookings
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> RejectBooking(int id)
+        {
+            
+            try
+            {
+                //Rejecting the booking
+                Booking? booking = await _context.Booking.FindAsync(id);
+                int UserId = booking.UserId;
+                Wallet? userWallet = await _context.Wallets.FirstAsync(e => e.UserId == UserId);
+                booking.Status = "Rejected";
+                booking.UpdatedAt = DateTime.Now;
+                userWallet.UpdatedAt = DateTime.Now;
+                userWallet.FundWallet(booking.Amount);
+                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BookingExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        //Cancel Booking
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> CancelBooking(int id)
+        {
+            
+
+            
+
+            try
+            {
+                //cancelling the booking
+                Booking? booking = await _context.Booking.FindAsync(id);
+                int UserId = booking.UserId;
+                int MerchId = booking.MerchantId;
+                Wallet? userWallet = await _context.Wallets.FirstAsync(e => e.UserId == UserId);
+                Wallet? MerchWallet = await _context.Wallets.FirstAsync(e => e.UserId == MerchId);
+                if(MerchWallet != null && booking.Status == "Active")
+                {
+                    double commission = booking.Amount - (booking.Amount * 20 / 100);
+                    MerchWallet.PendingBalance -= commission;
+                    MerchWallet.UpdatedAt = DateTime.Now;
+                }
+                booking.Status = "Cancelled";
+                booking.UpdatedAt = DateTime.Now;
+                userWallet.UpdatedAt = DateTime.Now;
+                userWallet.FundWallet(booking.Amount);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BookingExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+       
         // POST: api/Bookings
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // To protect from overposting attacks
         [HttpPost]
-        public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+        public async Task<ActionResult<Booking>> MakeBooking(Booking booking)
         {
           if (_context.Booking == null)
           {
               return Problem("Entity set 'spacemeetContext.Booking'  is null.");
           }
-            _context.Booking.Add(booking);
-            await _context.SaveChangesAsync();
+            int UserId = booking.UserId;
+    
+            Wallet? userWallet = await _context.Wallets.FindAsync(UserId);
+            if(userWallet?.Balance >= booking.Amount)
+            {
+                //Space_Hubs comission
+                double commission = booking.Amount * 20 / 100;
+                //Adding booking
+                _context.Booking.Add(booking);
+                
+                userWallet.WithDrawFunds(booking.Amount);
+                
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
+            }
+            
+            
+            return BadRequest("Bad Request");
 
-            return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
+            
         }
 
-        // DELETE: api/Bookings/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBooking(int id)
-        {
-            if (_context.Booking == null)
-            {
-                return NotFound();
-            }
-            var booking = await _context.Booking.FindAsync(id);
-            if (booking == null)
-            {
-                return NotFound();
-            }
-
-            _context.Booking.Remove(booking);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+        
 
         private bool BookingExists(int id)
         {
