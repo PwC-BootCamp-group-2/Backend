@@ -23,7 +23,7 @@ namespace spacemeet.Controllers
         }
 
         // GET: api/Bookings
-        [HttpGet, Authorize]
+        [HttpGet, Authorize(Roles = "merchant")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBooking()
         {
           if (_context.Booking == null)
@@ -34,7 +34,7 @@ namespace spacemeet.Controllers
         }
 
         // GET: api/Bookings/5
-        [HttpGet("{id}"), Authorize]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Booking>> GetBooking(int id)
         {
           if (_context.Booking == null)

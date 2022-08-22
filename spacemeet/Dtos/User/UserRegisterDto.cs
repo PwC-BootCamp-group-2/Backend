@@ -11,5 +11,6 @@ namespace spacemeet.Dtos.User
         public string Password { get; set; } = string.Empty;
         public string phoneNumber { get; set; } = string.Empty;
         public string companyName { get; set; } = string.Empty;
-    }
+        public string role { get; set; } = string.Empty;
+  }
 }
