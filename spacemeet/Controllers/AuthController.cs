@@ -23,7 +23,7 @@ namespace spacemeet.Controllers
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
         {
             var response = await _authrepo.Register(
-                new User {email = request.email, phoneNumber = request.phoneNumber, companyName = request.companyName}, request.Password
+                new User {email = request.email, phoneNumber = request.phoneNumber, companyName = request.companyName, role = request.role}, request.Password
             );
             if(!response.Success) {
                 return BadRequest(response);

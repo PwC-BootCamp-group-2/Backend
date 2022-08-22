@@ -28,12 +28,12 @@ namespace spacemeet.Data
             if (user == null)
             {
                 response.Success = false;
-                response.Message = "User not found.";
+                response.Message = "Invalid credentials";
             }
             else if (!VerifyPasswordHash(password, user.passwordHash, user.passwordSalt))
             {
                 response.Success = false;
-                response.Message = "Wrong password.";
+                response.Message = "Invalid credentials.";
             }
             else
             {
@@ -101,7 +101,8 @@ namespace spacemeet.Data
         {
             List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.email)
+                new Claim(ClaimTypes.Name, user.email),
+                new Claim(ClaimTypes.Role, user.role)
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8

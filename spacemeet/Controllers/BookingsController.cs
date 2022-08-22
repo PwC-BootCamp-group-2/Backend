@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace spacemeet.Controllers
         }
 
         // GET: api/Bookings
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "merchant")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBooking()
         {
           if (_context.Booking == null)
