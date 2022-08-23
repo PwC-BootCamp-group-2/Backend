@@ -34,17 +34,18 @@ namespace spacemeet.Controllers
             string imageData = "data:image/png;base64," + Convert.ToBase64String(byteImage);
             //string imageData = "ay";
       htmlBody.Append("<html><body>");
-        htmlBody.Append("<p>Dear Cusomer,</p>");
+        htmlBody.Append("<p>Dear Customer,</p>");
         htmlBody.Append("<p>Please refer below QR Code:</p>");
         htmlBody.Append("<p><img src='" + imageData + "'</p>");
         htmlBody.Append("</body></html>");
-      email.Body = new TextPart(TextFormat.Html);
+            email.Body = new TextPart(TextFormat.Html)
+            /*email.Body = htmlBody;*/
 
-      // {
-      //   Text = body
-      // };
+            {
+                Text = string.Format("<html><body> <p>Dear Customer,</p><p>Please refer below QR Code:</p><p><img src='" + imageData + "'</p></body></html>")
+            };
 
-      using var smtp = new SmtpClient();
+            using var smtp = new SmtpClient();
         smtp.Connect("smtp.gmail.com", 465, true);
         smtp.Authenticate("ayoolaanibabs0@gmail.com", "jxwtarvkivovjomz");
         smtp.Send(email);
