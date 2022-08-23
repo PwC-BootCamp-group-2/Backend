@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using spacemeet.Dtos.User;
+using spacemeet.Interfaces;
 
 namespace spacemeet.Data
 {
@@ -19,9 +21,9 @@ namespace spacemeet.Data
             _context = context;
             
         }
-        public async Task<ServiceResponse<string>> Login(string email, string password)
+        public async Task<ServiceResponse<User>> Login(string email, string password)
         {
-            var response = new ServiceResponse<string>();
+            var response = new ServiceResponse<User>();
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.email.ToLower().Equals(email.ToLower()));
 
@@ -37,8 +39,14 @@ namespace spacemeet.Data
             }
             else
             {
-                response.Data = CreateToken(user);
-            }
+        response.Token = CreateToken(user);
+        response.Data = user;
+        // response.Data.token = CreateToken(user);
+        // response.Data.email = user.email;
+        // response.Data.companyName = user.companyName;
+        // response.Data.phoneNumber = user.phoneNumber;
+        // response.Data.role = user.role;
+      }
             return response;
         }
 
