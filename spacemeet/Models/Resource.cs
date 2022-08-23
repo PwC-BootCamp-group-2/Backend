@@ -3,11 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace spacemeet.Models
 {
-    public class Resource : Space
+    public class Resource 
     {
         [Key]
-        public new int Id { get; set; }
+        public int Id { get; }
         [ForeignKey("Space")]
         public string? SpaceId {get; set;}
+        public string? Name { get; set;}
+        public int Amount { get; set;}
+        public string? Description { get; set;}
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }
