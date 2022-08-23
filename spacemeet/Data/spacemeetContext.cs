@@ -21,5 +21,7 @@ namespace spacemeet.Data
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Transaction> Transactions { get; set; } = default!;
         public DbSet<spacemeet.Models.Review>? Review { get; set; }
+        public DbSet<spacemeet.Models.Merchant>? Merchant { get; set; }
+        public DbSet<spacemeet.Models.Individual>? Individual { get; set; }
     }
 }
