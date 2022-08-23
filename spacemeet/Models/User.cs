@@ -17,6 +17,8 @@ namespace spacemeet.Models
         public byte[] passwordSalt { get; set; }
 
         public string role { get; set; } = string.Empty;
+        public string address { get; set; } = string.Empty;
+
 
   }
 }
