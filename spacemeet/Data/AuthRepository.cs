@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using MimeKit.Text;
 
+
 namespace spacemeet.Data
 {
     public class AuthRepository : IAuthRepository
@@ -24,9 +25,9 @@ namespace spacemeet.Data
             _context = context;
             
         }
-        public async Task<ServiceResponse<string>> Login(string email, string password)
+        public async Task<ServiceResponse<User>> Login(string email, string password)
         {
-            var response = new ServiceResponse<string>();
+            var response = new ServiceResponse<User>();
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.email.ToLower().Equals(email.ToLower()));
 
@@ -42,8 +43,14 @@ namespace spacemeet.Data
             }
             else
             {
-                response.Data = CreateToken(user);
-            }
+        response.Token = CreateToken(user);
+        response.Data = user;
+        // response.Data.token = CreateToken(user);
+        // response.Data.email = user.email;
+        // response.Data.companyName = user.companyName;
+        // response.Data.phoneNumber = user.phoneNumber;
+        // response.Data.role = user.role;
+      }
             return response;
         }
 
@@ -64,8 +71,16 @@ namespace spacemeet.Data
             user.passwordSalt = passwordSalt;
             user.VerificationToken = CreateRandomToken();
 
+            
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            
+            //Initializing Users Wallet
+            Wallet userWallet = new Wallet() { UserId = user.Id, CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now };
+            _context.Wallets.Add(userWallet);
+            await _context.SaveChangesAsync();
+
+            //Getting Response
             response.Data = user.Id;
             SendVerifyEmail(user.email, user.VerificationToken);
             return response;
