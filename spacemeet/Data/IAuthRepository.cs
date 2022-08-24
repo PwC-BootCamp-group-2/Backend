@@ -9,6 +9,8 @@ namespace spacemeet.Data
     {
         Task<ServiceResponse<int>> Register(User user, string password);
         Task<ServiceResponse<string>> Login(string email, string password);
+        Task<ServiceResponse<string>> Verify(string token);
+
         Task<bool> UserExists(string email);
 
     }

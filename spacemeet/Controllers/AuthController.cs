@@ -39,5 +39,14 @@ namespace spacemeet.Controllers
             }
             return Ok(response);
         }
+        [HttpPost("verify")]
+        public async Task<ActionResult<ServiceResponse<string>>> Verify(string token)
+        {
+            var response = await _authrepo.Verify(token);
+            if(!response.Success) {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }

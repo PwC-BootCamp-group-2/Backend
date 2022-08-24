@@ -25,6 +25,10 @@ builder.Services.AddSwaggerGen(c => {
 });
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
+{
+  build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
@@ -52,6 +56,8 @@ app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+
+app.UseCors("corspolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
