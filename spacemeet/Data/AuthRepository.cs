@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using spacemeet.Dtos.User;
-using spacemeet.Interfaces;
+using MimeKit;
+using MimeKit.Text;
+
 
 namespace spacemeet.Data
 {
@@ -65,6 +69,7 @@ namespace spacemeet.Data
 
             user.passwordHash = passwordHash;
             user.passwordSalt = passwordSalt;
+            user.VerificationToken = CreateRandomToken();
 
             
             _context.Users.Add(user);
@@ -77,6 +82,24 @@ namespace spacemeet.Data
 
             //Getting Response
             response.Data = user.Id;
+            SendVerifyEmail(user.email, user.VerificationToken);
+            return response;
+        }
+
+        public async Task<ServiceResponse<string>> Verify(string token)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.VerificationToken == token);
+            ServiceResponse<string> response = new ServiceResponse<string>();
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "Invalid Token.";
+                return response;
+            }
+            user.VerifiedAt = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            response.Message = "User Verified";
             return response;
         }
 
@@ -130,5 +153,25 @@ namespace spacemeet.Data
 
             return tokenHandler.WriteToken(token);
         }
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        }
+        public void SendVerifyEmail(string recieverEmail, string token)
+        {
+      string link = "https://www.google.com/";
+      ServiceResponse<string> response = new ServiceResponse<string>();
+      string body = "<h2>Kindly verfiy your email</h2> <a href={}><button>Click Here To Verify</button></a>";
+      var email = new MimeMessage();
+      email.From.Add(MailboxAddress.Parse("ayoolaanibabs0@gmail.com"));
+      email.To.Add(MailboxAddress.Parse("hakeemanibaba@yahoo.com"));
+      email.Subject = "Space Meet - Verify Your Email";
+            email.Body = new TextPart(TextFormat.Html) { Text = body };
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.gmail.com", 465, true);
+            smtp.Authenticate("ayoolaanibabs0@gmail.com", "jxwtarvkivovjomz");
+            smtp.Send(email);
+            smtp.Disconnect(true);
     }
+  }
 }

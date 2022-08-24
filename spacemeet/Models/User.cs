@@ -15,9 +15,13 @@ namespace spacemeet.Models
 
         public byte[] passwordHash { get; set; }
         public byte[] passwordSalt { get; set; }
-
         public string role { get; set; } = string.Empty;
         public string address { get; set; } = string.Empty;
+        public string? bvn { get; set; }
+        public string? VerificationToken { get; set; }
+        public DateTime? VerifiedAt { get; set; }
+        public string? PasswordResetToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
 
 
   }

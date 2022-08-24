@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace spacemeet.Migrations
 {
-    public partial class ExtraInformation : Migration
+    public partial class newMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -123,7 +123,12 @@ namespace spacemeet.Migrations
                     passwordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     passwordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    bvn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

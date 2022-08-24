@@ -12,8 +12,8 @@ using spacemeet.Data;
 namespace spacemeet.Migrations
 {
     [DbContext(typeof(spacemeetContext))]
-    [Migration("20220823114751_ExtraInformation")]
-    partial class ExtraInformation
+    [Migration("20220824123724_newMigrations")]
+    partial class newMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -268,8 +268,23 @@ namespace spacemeet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("address")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("bvn")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("companyName")
