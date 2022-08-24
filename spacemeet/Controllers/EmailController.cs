@@ -17,6 +17,7 @@ namespace spacemeet.Controllers
     [Route("[controller]")]
     public class EmailController : ControllerBase
     {
+        [HttpPost]
         public IActionResult SendEmail(BookingEmailDto request)
         {
       var email = new MimeMessage();
@@ -31,9 +32,10 @@ namespace spacemeet.Controllers
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             byte[] byteImage = qrCodeImage.BitmapToByteArray();
             string imageData = "data:image/png;base64," + Convert.ToBase64String(byteImage);
-      email.Body = new TextPart(TextFormat.Html)
+            string image = "https://blog.hubspot.com/hubfs/image8-2.jpg";
+            email.Body = new TextPart(TextFormat.Html)
       {
-        Text = string.Format("<html><body> <p>Dear Cusomer,</p> <p>Please refer below QR Code:</p> <p><img src='" + imageData + "'</p> </body></html>")
+        Text = string.Format("<html><body> <p>Dear Cusomer,</p> <p>Please refer below QR Code:</p> <p><img src='" + image + "'</p> </body></html>")
       };
 
       using var smtp = new SmtpClient();
