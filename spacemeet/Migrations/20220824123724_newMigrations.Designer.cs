@@ -12,8 +12,8 @@ using spacemeet.Data;
 namespace spacemeet.Migrations
 {
     [DbContext(typeof(spacemeetContext))]
-    [Migration("20220821112524_addTransactions")]
-    partial class addTransactions
+    [Migration("20220824123724_newMigrations")]
+    partial class newMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,8 +75,8 @@ namespace spacemeet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Amount")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -123,6 +123,88 @@ namespace spacemeet.Migrations
                     b.HasIndex("SpaceId");
 
                     b.ToTable("ImagesModel");
+                });
+
+            modelBuilder.Entity("spacemeet.Models.Individual", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("companyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("userName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Individual");
+                });
+
+            modelBuilder.Entity("spacemeet.Models.Merchant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("adminName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("validId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Merchant");
+                });
+
+            modelBuilder.Entity("spacemeet.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpaceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("spacemeet.Models.Space", b =>
@@ -186,6 +268,25 @@ namespace spacemeet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("bvn")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("companyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -206,6 +307,10 @@ namespace spacemeet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -219,14 +324,14 @@ namespace spacemeet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Balance")
-                        .HasColumnType("int");
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PendingBalance")
-                        .HasColumnType("int");
+                    b.Property<double>("PendingBalance")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");

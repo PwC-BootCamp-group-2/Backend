@@ -17,7 +17,7 @@ namespace spacemeet.Controllers
     [Route("[controller]")]
     public class EmailController : ControllerBase
     {
-        [HttpPost]
+      [HttpPost]
         public IActionResult SendEmail(BookingEmailDto request)
         {
       var email = new MimeMessage();

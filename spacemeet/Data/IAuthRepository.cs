@@ -10,6 +10,7 @@ namespace spacemeet.Data
     public interface IAuthRepository
     {
         Task<ServiceResponse<int>> Register(User user, string password);
+        Task<ServiceResponse<string>> Verify(string token);
         Task<ServiceResponse<User>> Login(string email, string password);
         Task<bool> UserExists(string email);
 
