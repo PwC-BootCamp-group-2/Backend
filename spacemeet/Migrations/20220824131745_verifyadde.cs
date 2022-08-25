@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace spacemeet.Migrations
 {
-    public partial class newMigrations : Migration
+    public partial class verifyadde : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

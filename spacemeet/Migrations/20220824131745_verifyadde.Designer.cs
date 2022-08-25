@@ -12,8 +12,8 @@ using spacemeet.Data;
 namespace spacemeet.Migrations
 {
     [DbContext(typeof(spacemeetContext))]
-    [Migration("20220824123724_newMigrations")]
-    partial class newMigrations
+    [Migration("20220824131745_verifyadde")]
+    partial class verifyadde
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
