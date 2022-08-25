@@ -13,6 +13,6 @@ namespace spacemeet.Dtos.User
         public string companyName { get; set; } = string.Empty;
         public string role { get; set; } = string.Empty;
         public string address { get; set; } = string.Empty;
-
+        public string fullName { get; set; } = string.Empty;
   }
 }
