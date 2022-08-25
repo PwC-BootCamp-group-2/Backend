@@ -9,6 +9,8 @@ namespace spacemeet.Models
     {
         public int Id { get; set; }
         public string email { get; set; } = string.Empty;
+        public string fullName { get; set; } = string.Empty;
+
 
         public string phoneNumber { get; set; } = string.Empty;
         public string companyName { get; set; } = string.Empty;

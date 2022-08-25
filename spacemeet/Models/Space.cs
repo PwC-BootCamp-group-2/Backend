@@ -1,9 +1,11 @@
-﻿namespace spacemeet.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace spacemeet.Models
 {
     public class Space
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        [ForeignKey("User")]
         public int MerchantId { get; set; }
         public string? Type { get; set; }
         public int Capacity { get; set; }

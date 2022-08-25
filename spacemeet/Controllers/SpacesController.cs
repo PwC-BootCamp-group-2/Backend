@@ -50,6 +50,23 @@ namespace spacemeet.Controllers
             return space;
         }
 
+    [HttpGet("User/{id}")]
+    public async Task<ActionResult<IEnumerable<Space>>> GetUserSpaces(int id)
+    {
+      if (_context.Space == null)
+      {
+        return NotFound();
+      }
+      var spaces = await _context.Space.Where(e => e.MerchantId == id).ToListAsync();
+
+      if (spaces == null)
+      {
+        return NotFound();
+      }
+
+      return spaces;
+    }
+
         // PUT: api/Spaces/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

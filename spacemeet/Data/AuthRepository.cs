@@ -41,6 +41,11 @@ namespace spacemeet.Data
                 response.Success = false;
                 response.Message = "Invalid credentials.";
             }
+            else if (user.VerifiedAt == null)
+            {
+                response.Success = false;
+                response.Message = "User Not verified";
+            }
             else
             {
         response.Token = CreateToken(user);
@@ -70,8 +75,6 @@ namespace spacemeet.Data
             user.passwordHash = passwordHash;
             user.passwordSalt = passwordSalt;
             user.VerificationToken = CreateRandomToken();
-
-            
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             
@@ -80,12 +83,12 @@ namespace spacemeet.Data
             _context.Wallets.Add(userWallet);
             await _context.SaveChangesAsync();
 
-            //Getting Response
-            response.Data = user.Id;
+      //Getting Response
+      response.Message = "Account succesfuly created, Kindly verify your Email";
+      response.Data = user.Id;
             SendVerifyEmail(user.email, user.VerificationToken);
             return response;
         }
-
         public async Task<ServiceResponse<string>> Verify(string token)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.VerificationToken == token);
@@ -159,14 +162,16 @@ namespace spacemeet.Data
         }
         public void SendVerifyEmail(string recieverEmail, string token)
         {
-      string link = "https://www.google.com/";
+      string link = $"http://localhost:3000/verify/{token}";
       ServiceResponse<string> response = new ServiceResponse<string>();
-      string body = "<h2>Kindly verfiy your email</h2> <a href={}><button>Click Here To Verify</button></a>";
       var email = new MimeMessage();
       email.From.Add(MailboxAddress.Parse("ayoolaanibabs0@gmail.com"));
-      email.To.Add(MailboxAddress.Parse("hakeemanibaba@yahoo.com"));
+      email.To.Add(MailboxAddress.Parse(recieverEmail));
       email.Subject = "Space Meet - Verify Your Email";
-            email.Body = new TextPart(TextFormat.Html) { Text = body };
+            email.Body = new TextPart(TextFormat.Html) 
+            { 
+              Text = string.Format("<h2>Kindly verfiy your email</h2> <a href=" + link + "><button>Click Here To Verify</button></a>")
+            };
             using var smtp = new SmtpClient();
             smtp.Connect("smtp.gmail.com", 465, true);
             smtp.Authenticate("ayoolaanibabs0@gmail.com", "jxwtarvkivovjomz");

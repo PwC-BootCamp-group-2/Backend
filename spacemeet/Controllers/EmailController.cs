@@ -24,7 +24,7 @@ namespace spacemeet.Controllers
       email.From.Add(MailboxAddress.Parse("ayoolaanibabs0@gmail.com"));
       email.To.Add(MailboxAddress.Parse(request.email));
       email.Subject = "Test email Subject";
-            string qrText = request.BookingId;
+            string qrText = "hi";
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrText,
             QRCodeGenerator.ECCLevel.Q);
@@ -47,15 +47,15 @@ namespace spacemeet.Controllers
     }
         
     }
-    public static class BitmapExtension
-    {
-        public static byte[] BitmapToByteArray(this Bitmap bitmap)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bitmap.Save(ms, ImageFormat.Png);
-                return ms.ToArray();
-            }
-        }
-    }
+    // public static class BitmapExtension
+    // {
+    //     public static byte[] BitmapToByteArray(this Bitmap bitmap)
+    //     {
+    //         using (MemoryStream ms = new MemoryStream())
+    //         {
+    //             bitmap.Save(ms, ImageFormat.Png);
+    //             return ms.ToArray();
+    //         }
+    //     }
+    // }
 }
