@@ -18,9 +18,10 @@ namespace spacemeet.Models
         public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public bool Used { get; set; }
 
-        //To Enable Cancellation Of Booked Space by both Merchant and Individuals
-        public void CancelBooking() { }
+    //To Enable Cancellation Of Booked Space by both Merchant and Individuals
+    public void CancelBooking() { }
 
        /* protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
